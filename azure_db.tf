@@ -10,7 +10,7 @@ resource "azurerm_mssql_server" "mssql" {
 }
 
 resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
-  count = var.use_existing_sql_server ? 0 : 1
+  count            = var.use_existing_sql_server ? 0 : 1
   name             = "FirewallRule-AllowAzureServices"
   server_id        = azurerm_mssql_server.mssql[0].id
   start_ip_address = "0.0.0.0"
@@ -18,7 +18,7 @@ resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
 }
 
 resource "azurerm_mssql_database" "ai" {
-  count = var.use_existing_sql_server ? 0 : 1
+  count          = var.use_existing_sql_server ? 0 : 1
   name           = "AI"
   server_id      = azurerm_mssql_server.mssql[0].id
   collation      = "SQL_Latin1_General_CP1_CI_AS"
@@ -30,7 +30,7 @@ resource "azurerm_mssql_database" "ai" {
 }
 
 resource "azurerm_mssql_database" "ad" {
-  count = var.use_existing_sql_server ? 0 : 1
+  count          = var.use_existing_sql_server ? 0 : 1
   name           = "AD"
   server_id      = azurerm_mssql_server.mssql[0].id
   collation      = "SQL_Latin1_General_CP1_CI_AS"
@@ -42,7 +42,7 @@ resource "azurerm_mssql_database" "ad" {
 }
 
 resource "azurerm_mssql_database" "ds" {
-  count = var.use_existing_sql_server ? 0 : 1
+  count          = var.use_existing_sql_server ? 0 : 1
   name           = "DS"
   server_id      = azurerm_mssql_server.mssql[0].id
   collation      = "SQL_Latin1_General_CP1_CI_AS"
@@ -53,7 +53,7 @@ resource "azurerm_mssql_database" "ds" {
   sku_name       = "S0"
 }
 resource "azurerm_mssql_database" "sm" {
-  count = var.use_existing_sql_server ? 0 : 1
+  count          = var.use_existing_sql_server ? 0 : 1
   name           = "SM"
   server_id      = azurerm_mssql_server.mssql[0].id
   collation      = "SQL_Latin1_General_CP1_CI_AS"

@@ -37,8 +37,8 @@ resource "azurerm_container_group" "ad" {
       #keep this for example writing to datadog
       #"xm__Serilog__WriteTo__0__Name"                 = "DatadogLogs"
       #"xm__Serilog__WriteTo__0__Args__apiKey"         = "35359f476f0f9da52310da3b29ddc80c"
-      "xm__ApplicationInsights__ConnectionString"     = "${azurerm_application_insights.appinsights.connection_string}"
-      "xm__xmpro__xmsettings__adminRole"              = "Administrator"
+      "xm__ApplicationInsights__ConnectionString" = "${azurerm_application_insights.appinsights.connection_string}"
+      "xm__xmpro__xmsettings__adminRole"          = "Administrator"
       # "xm__xmpro__xmsettings__data__connectionString" = "Data Source=tcp:${azurerm_mssql_server.mssql.name}.database.windows.net;Initial Catalog=AD;User ID=${var.db_admin_username};Password=${var.db_admin_password};"
       # "xm__xmpro__data__connectionString"             = "Data Source=tcp:${azurerm_mssql_server.mssql.name}.database.windows.net;Initial Catalog=AD;User ID=${var.db_admin_username};Password=${var.db_admin_password};"
       "xm__xmpro__xmsettings__data__connectionString" = "${local.ad_connection_string}"

@@ -36,7 +36,7 @@ resource "azurerm_container_group" "ai" {
       "ASPNETCORE_ENVIRONMENT"                                    = "dev"
       "ASPNETCORE_FORWARDEDHEADERS_ENABLED"                       = "true"
       "xm__ApplicationInsights__ConnectionString"                 = "${azurerm_application_insights.appinsights.connection_string}"
-      "xm__xmpro__aIDesigner__jupyterUrl__url"                    = "https://xmpro-jupyter-dev.southeastasia.cloudapp.azure.com"
+      "xm__xmpro__aIDesigner__jupyterUrl__url"                    = ""
       "xm__xmpro__xmidentity__client__id"                         = "${data.external.deployment_script_outputs.result["AIProductId"]}"
       "xm__xmpro__xmidentity__client__baseUrl"                    = "https://ai.${azurerm_dns_zone.dns.name}/"
       "xm__xmpro__xmidentity__client__sharedkey"                  = "${data.external.deployment_script_outputs.result["AIProductKey"]}"

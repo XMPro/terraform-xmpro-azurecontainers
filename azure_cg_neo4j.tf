@@ -190,9 +190,9 @@ resource "azurerm_container_group" "neo4j" {
     environment_variables = {
       NEO4J_AUTH                                      = "neo4j/${var.docker_neo4j_auth}"
       NEO4J_ACCEPT_LICENSE_AGREEMENT                  = "yes"
-      NEO4J_apoc_export_file_enabled                  = true
-      NEO4J_apoc_import_file_enabled                  = true
-      NEO4J_apoc_import_file_use__neo4j__config       = true
+      NEO4J_apoc_export_file_enabled                  = "true"
+      NEO4J_apoc_import_file_enabled                  = "true"
+      NEO4J_apoc_import_file_use__neo4j__config       = "true"
       NEO4J_PLUGINS                                   = "[\"apoc\"]"
       NEO4J_server_https_enabled                      = true
       NEO4J_dbms_ssl_policy_https_enabled             = true

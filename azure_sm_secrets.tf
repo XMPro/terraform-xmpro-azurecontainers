@@ -29,9 +29,9 @@ locals {
 }
 
 resource "null_resource" "run_script" {
-  count       = var.use_existing_sql_server ? 0 : 1 
-  depends_on  = [azurerm_mssql_database.sm, azurerm_mssql_firewall_rule.allow_local_access]
-  triggers    = {
+  count      = var.use_existing_sql_server ? 0 : 1
+  depends_on = [azurerm_mssql_database.sm, azurerm_mssql_firewall_rule.allow_local_access]
+  triggers = {
     script_hash = filebase64sha256("${path.module}/TerraformSM.ps1")
     condition   = var.is_first_run == true
   }

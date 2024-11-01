@@ -36,7 +36,7 @@ variable "acr_username" {
 variable "acr_password" {
   description = "Azure Container Registry Password"
   sensitive   = true
-  default =  "none"
+  default     = "none"
 }
 
 variable "docker_neo4j_auth" {
@@ -84,8 +84,8 @@ variable "companyname" {
   description = "SM Company Name"
   default     = "xmrrdev"
 
-   validation {
-    condition = length(var.companyname) <= 50
+  validation {
+    condition     = length(var.companyname) <= 50
     error_message = "company name too long"
   }
 }
@@ -105,13 +105,7 @@ variable "rabbitmq_password" {
   sensitive   = true
 }
 
-# variable "docker_sh_mags_collection_id" {
-#   sensitive = true
-# }
 
-# variable "docker_sh_mags_secret" {
-#   sensitive = true
-# }
 
 variable "dns_zone_name" {
   description = "The DNS zone name"
@@ -219,22 +213,22 @@ variable "is_azdo_pipeline" {
   default = false
 }
 variable "sh_default_cpu" {
-  type = number
+  type    = number
   default = 1
 }
 
 variable "sh_default_memory" {
-  type = number
+  type    = number
   default = 4
 }
 
 variable "sh_ai_cpu" {
-  type = number
+  type    = number
   default = 1
 }
 
 variable "sh_ai_memory" {
-  type = number
+  type    = number
   default = 4
 }
 
@@ -250,8 +244,8 @@ variable "use_existing_sql_server" {
 
 variable "existing_sql_server_url" {
   description = "SQL Server FQDN + port (optional)"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 # --------------------------------------------------
@@ -259,8 +253,8 @@ variable "existing_sql_server_url" {
 # --------------------------------------------------
 
 resource "random_string" "name_suffix" {
-  length = 5
+  length  = 5
   special = false
-  upper = false
+  upper   = false
   numeric = false
 }
