@@ -35,8 +35,6 @@ resource "azurerm_container_group" "ds" {
     environment_variables = {
       "ASPNETCORE_ENVIRONMENT"              = "dev"
       "ASPNETCORE_FORWARDEDHEADERS_ENABLED" = "true"
-      "xm__Serilog__WriteTo__0__Name"       = "DatadogLogs"
-      # "xm__Serilog__WriteTo__0__Args__apiKey"         = "${var.docker_ds_serilog_apikey}"
       "xm__ApplicationInsights__ConnectionString"     = "${azurerm_application_insights.appinsights.connection_string}"
       "xm__xmpro__xmsettings__adminRole"              = "Administrator"
       "xm__xmpro__xmsettings__data__connectionString" = "${local.ds_connection_string}"
