@@ -33,6 +33,7 @@ $DeploymentScriptOutputs = @{}
 # Get the Stream Host connection profile
 $sql = "SELECT [Id] FROM Company WHERE Name = '{0}'"
 $company = Invoke-Sqlcmd -ConnectionString $smConnectionString -Query ($sql -f $CompanyName)
+# Invoke-Sqlcmd -ConnectionString "Data Source=tcp:xmpro-sqlserver.database.windows.net,1433;Initial Catalog=SM;User ID=xmadmin;Password=jaoeUDjYA2Wq" -Query ("SELECT [Id] FROM Company WHERE Name = 'something'" )
 $companyId = $company.Id
 
 # Write-Output "Company"

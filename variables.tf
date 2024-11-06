@@ -3,7 +3,7 @@ variable "prefix" {
   default     = "xmdemo"
 }
 variable "environment" {
-  description = "The prefix used for all resources in this example"
+  description = "The environment name for resource identification"
   default     = "jonahf"
 }
 
@@ -105,7 +105,13 @@ variable "rabbitmq_password" {
   sensitive   = true
 }
 
+# variable "docker_sh_mags_collection_id" {
+#   sensitive = true
+# }
 
+# variable "docker_sh_mags_secret" {
+#   sensitive = true
+# }
 
 variable "dns_zone_name" {
   description = "The DNS zone name"
@@ -212,25 +218,74 @@ variable "is_azdo_pipeline" {
   type    = bool
   default = false
 }
-variable "sh_default_cpu" {
-  type    = number
-  default = 1
+
+variable "storage_share_name" {
+  type    = string
+  default = "share-data"
 }
+
+variable "storage_share_quota" {
+  type    = number
+  default = 10
+}
+
+#-----------------------
+# streamhost configuration
+#-----------------------
 
 variable "sh_default_memory" {
-  type    = number
-  default = 4
+  description = "assigned memory value for streamhost default"
+  type        = number
+  default     = 4
 }
-
-variable "sh_ai_cpu" {
-  type    = number
-  default = 1
+variable "sh_default_cpu" {
+  description = "assigned cpu value for streamhost default"
+  type        = number
+  default     = 1
 }
-
 variable "sh_ai_memory" {
-  type    = number
-  default = 4
+  description = "assigned memory value for streamhost ai"
+  type        = number
+  default     = 4
 }
+variable "sh_ai_cpu" {
+  description = "assigned cpu value for streamhost ai"
+  type        = number
+  default     = 1
+}
+
+variable "streamhost_default_container_image" {
+  description = "streamhost default container image"
+  type        = string
+  default     = "xmprocontrib.azurecr.io/sh-debian-ai-assistant:latest"
+}
+
+variable "streamhost_ai_container_image" {
+  description = "streamhost ai container image"
+  type        = string
+  default     = "xmprocontrib.azurecr.io/sh-debian-ai-assistant:latest"
+}
+
+variable "docker_migration_script_path" {
+  description = "value"
+  default     = "/scripts"
+}
+
+variable "docker_azure_openaichatdeploymentname" {
+  description = "Azure chat deployment name to be used by the stream host"
+  default     = "gpt4o"
+}
+
+variable "docker_azure_openaiembeddingsdeploymentname" {
+  description = "Azure embeddings deployment name by the stream host"
+  default     = "text-embedding-ada-002"
+}
+
+variable "docker_openaiversion" {
+  description = "Azure openai version by the stream host"
+  default     = "2024-02-01"
+}
+
 
 # --------------------------------------------------
 # Existing SQL Server Configuration

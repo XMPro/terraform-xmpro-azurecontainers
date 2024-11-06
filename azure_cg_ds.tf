@@ -33,8 +33,8 @@ resource "azurerm_container_group" "ds" {
     memory = "2"
 
     environment_variables = {
-      "ASPNETCORE_ENVIRONMENT"              = "dev"
-      "ASPNETCORE_FORWARDEDHEADERS_ENABLED" = "true"
+      "ASPNETCORE_ENVIRONMENT"                        = "dev"
+      "ASPNETCORE_FORWARDEDHEADERS_ENABLED"           = "true"
       "xm__ApplicationInsights__ConnectionString"     = "${azurerm_application_insights.appinsights.connection_string}"
       "xm__xmpro__xmsettings__adminRole"              = "Administrator"
       "xm__xmpro__xmsettings__data__connectionString" = "${local.ds_connection_string}"

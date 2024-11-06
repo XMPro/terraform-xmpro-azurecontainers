@@ -32,12 +32,10 @@ resource "azurerm_container_group" "ad" {
     memory = "3"
 
     environment_variables = {
-      "ASPNETCORE_ENVIRONMENT"              = "dev"
-      "ASPNETCORE_FORWARDEDHEADERS_ENABLED" = "true"
-      "xm__ApplicationInsights__ConnectionString" = "${azurerm_application_insights.appinsights.connection_string}"
-      "xm__xmpro__xmsettings__adminRole"          = "Administrator"
-      # "xm__xmpro__xmsettings__data__connectionString" = "Data Source=tcp:${azurerm_mssql_server.mssql.name}.database.windows.net;Initial Catalog=AD;User ID=${var.db_admin_username};Password=${var.db_admin_password};"
-      # "xm__xmpro__data__connectionString"             = "Data Source=tcp:${azurerm_mssql_server.mssql.name}.database.windows.net;Initial Catalog=AD;User ID=${var.db_admin_username};Password=${var.db_admin_password};"
+      "ASPNETCORE_ENVIRONMENT"                        = "dev"
+      "ASPNETCORE_FORWARDEDHEADERS_ENABLED"           = "true"
+      "xm__ApplicationInsights__ConnectionString"     = "${azurerm_application_insights.appinsights.connection_string}"
+      "xm__xmpro__xmsettings__adminRole"              = "Administrator"
       "xm__xmpro__xmsettings__data__connectionString" = "${local.ad_connection_string}"
       "xm__xmpro__data__connectionString"             = "${local.ad_connection_string}"
       "xm__xmpro__healthChecks__cssPath"              = "/app/ClientApp/dist/en-US/assets/content/styles/healthui.css"

@@ -8,8 +8,7 @@ locals {
 
 locals {
   base_connection_string = "Server=tcp:${local.mssql_server_url};persist security info=True;user id=${local.mssql_admin_login};password=${local.mssql_admin_password};"
-
-  ad_connection_string = "${local.base_connection_string}Initial Catalog=AD;"
-  ds_connection_string = "${local.base_connection_string}Initial Catalog=DS;"
-  ai_connection_string = "${local.base_connection_string}Initial Catalog=AI;"
+  ad_connection_string   = "${local.base_connection_string}Initial Catalog=AD;"
+  ds_connection_string   = "${local.base_connection_string}Initial Catalog=DS;"
+  ai_connection_string   = "${local.base_connection_string}Initial Catalog=AI;"
 }

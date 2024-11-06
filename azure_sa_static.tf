@@ -12,3 +12,10 @@ resource "azurerm_storage_account" "storage_account" {
     index_document = "index.html"
   }
 }
+
+resource "azurerm_storage_share" "sh_data" {
+  name                 = var.storage_share_name
+  storage_account_name = azurerm_storage_account.storage_account.name
+  quota                = var.storage_share_quota
+  depends_on           = [azurerm_storage_account.storage_account]
+}
