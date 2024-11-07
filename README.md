@@ -1,9 +1,7 @@
 # XMPro - Azure Containers Terraform Module
 
 ## Overview
-This Terraform module helps you deploy resources on Azure using Terraform CLI commands. It allows you to customize variables for resource names, environment settings, and resource allocations. This module is designed for a fresh installation of all XMPRo resources.
-
-> 💡 **Tip**: Press `Ctrl + Shift + V` in VS Code to preview this Markdown file.
+This Terraform module facilitates the deployment of XMPRo resources on Azure using Terraform CLI commands. It is designed for a fresh installation of all XMPRo products, including the necessary infrastructure and configurations. The module allows you to customize various parameters such as resource names, environment settings, and resource allocations to suit your specific deployment needs. By using this module, you can ensure a consistent and repeatable setup process for XMPRo products in your Azure environment.
 
 ## Prerequisites
 
@@ -44,21 +42,30 @@ This Terraform module helps you deploy resources on Azure using Terraform CLI co
 
 ### 2. Deployment Steps
 
-1. **Navigate to Module Directory**
-   ```bash
-   cd /path/to/xmpro-development/deploy/terraform/examples/azure_containers_extdb
+1. **Create your main module and copy paste into your terraform directory**
+
+   ```
+      module "<block_name>" {
+         source  = "XMPro/azurecontainers/xmpro"
+         version = "0.0.5"
+         # insert the required variables here
+      }
    ```
 
 2. **Run Docker Container**
    ```bash
    docker run -it --rm \
-     -v <path-to-git-repo>:/opt/terraform \
+      --env-file az.env \
+      -v <path-to-git-repo>:/opt/terraform \
      xmpro.azurecr.io/xmterraform
    ```
+   Example `<path-to-git-repo>` : `F:\projects\xmpro`
+   <br>
+   *The folder path should will contain the az.env file as well*
 
 3. **Navigate Inside Container**
    ```bash
-   cd deploy/terraform/examples/azure_containers_extdb
+   cd <path-of-your-terraform-directory>
    ```
 
 ## Configuration
@@ -73,20 +80,19 @@ Update the following variables in `main.tf` according to your requirements:
 | `environment`                 | Deployment environment    | `dev`, `prod`                 |
 | `location`                    | Azure region              | `eastus`                      |
 | `companyname`                 | Company name in database  | `MyCompany`                   |
-| `docker_db_admin_username`    | Database username         | `admin`                       |
-| `docker_db_admin_password`    | Database password         | `password123`                 |
-| `mssql_server_url`            | SQL Server URL            | `server.database.windows.net` |
-| `using_existing_sql_server`   | Use existing database     | `true`                        |
+| `db_admin_username`           | Database username         | `admin`                       |
+| `db_admin_password`           | Database password         | `<use-secure-password>`       |
+| `company_admin_password`      | Database password         | `<use-secure-password>`       |
+| `site_admin_password`         | Database password         | `<use-secure-password>`       |
 | `dns_zone_name`               | DNS zone for webapp       | `example.com`                 |
+| `using_existing_sql_server`   | Use existing database     | `true`                        |
+| `existing_sql_server_url`     | SQL Server URL            | `server.database.windows.net` |
 
 ## Terraform Commands
 
 | Command              | Description                  | When to Use      |
 |---------             |-------------                 |-------------     |
 | `terraform init`     | Initialize working directory | First time setup |
-| `terraform fmt`      | Format configuration         | Before commits   |
-| `terraform validate` | Verify configuration         | Before `plan`    |
-| `terraform plan`     | Preview changes              | Before `apply`   |
 | `terraform apply`    | Apply changes                | To deploy        |
 | `terraform destroy`  | Remove resources             | To clean up      |
 
