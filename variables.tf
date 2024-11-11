@@ -313,3 +313,7 @@ resource "random_string" "name_suffix" {
   upper   = false
   numeric = false
 }
+
+variable "module_streamhost_source" {
+  default = "../terraform-xmpro-streamhost"
+}

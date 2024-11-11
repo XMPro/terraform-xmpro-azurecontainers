@@ -53,7 +53,8 @@ locals {
 }
 
 module "sh" {
-  source = "../terraform-xmpro-streamhost"
+  # source = "../terraform-xmpro-streamhost"
+  source = var.module_streamhost_source
 
   for_each = local.container_streamhost_data
 
