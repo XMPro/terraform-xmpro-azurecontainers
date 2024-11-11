@@ -313,4 +313,3 @@ resource "random_string" "name_suffix" {
   upper   = false
   numeric = false
 }
-
