@@ -54,6 +54,7 @@ locals {
 
 module "sh" {
   source  = "XMPro/streamhost/xmpro"
+  version = "0.0.6-alpha"
 
   ## For local development, change source to this:
   # source = "../terraform-xmpro-streamhost"
