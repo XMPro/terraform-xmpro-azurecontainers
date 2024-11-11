@@ -54,10 +54,9 @@ locals {
 
 module "sh" {
   source  = "XMPro/streamhost/xmpro"
-  version = "4.4.16"
 
   ## For local development, change source to this:
-  # source = "../../modules/terraform-xmpro-streamhost"
+  # source = "../terraform-xmpro-streamhost"
 
   for_each = local.container_streamhost_data
 
