@@ -53,6 +53,10 @@ This Terraform module facilitates the deployment of XMPRo resources on Azure usi
    ```
 
 2. **Run Docker Container**
+
+   > **Note:** The `xmpro.azurecr.io/xmterraform` image contains the necessary tools and configurations for XMPro deployments.
+   > You'll need access to the XMPro container registry. Contact your administrator if you encounter authentication issues.
+
    ```bash
    docker run -it --rm \
       --env-file az.env \
@@ -61,7 +65,7 @@ This Terraform module facilitates the deployment of XMPRo resources on Azure usi
    ```
    Example `<path-to-git-repo>` : `F:\projects\xmpro`
    <br>
-   *The folder path should will contain the az.env file as well*
+   *The folder path should contain the az.env file as well*
 
 3. **Navigate Inside Container**
    ```bash
