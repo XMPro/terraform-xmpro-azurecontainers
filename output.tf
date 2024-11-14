@@ -1,15 +1,14 @@
-output "AI_URL" {
-  value = azurerm_dns_cname_record.ai.fqdn
+output "ai_url" {
+  value = trim(azurerm_dns_cname_record.ai.fqdn, ".")
 }
-output "AD_URL" {
-  value = azurerm_dns_cname_record.ad.fqdn
+output "ad_url" {
+  value = trim(azurerm_dns_cname_record.ad.fqdn, ".")
 }
-output "DS_URL" {
-  value = azurerm_dns_cname_record.ds.fqdn
+output "ds_url" {
+  value = trim(azurerm_dns_cname_record.ds.fqdn, ".")
 }
-
-output "SM_URL" {
-  value = azurerm_dns_cname_record.sm.fqdn
+output "sm_url" {
+  value = trim(azurerm_dns_cname_record.sm.fqdn, ".")
 }
 
 output "sqlserver_fqdn" {
@@ -63,6 +62,10 @@ output "resource_group_name" {
   value = azurerm_resource_group.xmprodocker.name
 }
 
+output "resource_group_location" {
+  value = azurerm_resource_group.xmprodocker.location
+}
+
 output "storage_account_name" {
   value = azurerm_storage_account.storage_account.name
 
@@ -71,4 +74,16 @@ output "storage_account_name" {
 output "storage_account_primary_access_key" {
   value = azurerm_storage_account.storage_account.primary_access_key
 
+}
+
+output "log_analytics_workspace_id" {
+  value = azurerm_log_analytics_workspace.logs.workspace_id
+}
+
+output "log_analytics_primary_shared_key" {
+  value = azurerm_log_analytics_workspace.logs.primary_shared_key
+}
+
+output "appinsights_connectionstring" {
+  value = azurerm_application_insights.appinsights.connection_string
 }
