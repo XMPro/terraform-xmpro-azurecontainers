@@ -314,3 +314,13 @@ resource "random_string" "name_suffix" {
   numeric = false
 }
 
+variable "appinsights_minimum_level_default" {
+  description = "The minimum logging level for Application Insights"
+  type        = string
+  default     = "Debug"
+
+  validation {
+    condition     = contains(["Trace", "Debug", "Information", "Warning", "Error", "Critical", "None"], var.appinsights_minimum_level_default)
+    error_message = "The minimum logging level must be one of: Trace, Debug, Information, Warning, Error, Critical, or None."
+  }
+}

@@ -45,6 +45,15 @@ resource "azurerm_container_group" "rabbitmq" {
       protocol = "TCP"
     }
   }
+
+  diagnostics {
+    log_analytics {
+      workspace_id  = azurerm_log_analytics_workspace.logs.workspace_id
+      log_type      = "ContainerInsights"
+      workspace_key = azurerm_log_analytics_workspace.logs.primary_shared_key
+    }
+  }
+  
   tags = {
     product    = "RABBITMQ"
     createdby  = "jonahfrany"

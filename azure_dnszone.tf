@@ -42,7 +42,6 @@ resource "azurerm_dns_cname_record" "ad" {
   record              = azurerm_container_group.ad.fqdn
 }
 
-
 resource "azurerm_dns_cname_record" "rabbitmq" {
   name                = "rabbitmq"
   zone_name           = azurerm_dns_zone.dns.name

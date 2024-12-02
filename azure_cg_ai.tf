@@ -19,11 +19,16 @@ resource "azurerm_container_group" "ai" {
   ip_address_type     = "Public"
   dns_name_label      = "cg-${var.prefix}-ai-${var.environment}-${var.location}"
   os_type             = "Linux"
+  depends_on          = [ azurerm_key_vault.ai_vault ]
 
   image_registry_credential {
     server   = var.acr_url_product
     username = var.acr_username
     password = var.acr_password
+  }
+
+  identity {
+    type = "SystemAssigned"
   }
 
   container {
@@ -33,37 +38,30 @@ resource "azurerm_container_group" "ai" {
     memory = "1.5"
 
     environment_variables = {
-      "ASPNETCORE_ENVIRONMENT"                                    = "dev"
-      "ASPNETCORE_FORWARDEDHEADERS_ENABLED"                       = "true"
-      "xm__ApplicationInsights__ConnectionString"                 = "${azurerm_application_insights.appinsights.connection_string}"
-      "xm__xmpro__aIDesigner__jupyterUrl__url"                    = "https://xmpro-jupyter-dev.southeastasia.cloudapp.azure.com"
-      "xm__xmpro__xmidentity__client__id"                         = "${data.external.deployment_script_outputs.result["AIProductId"]}"
-      "xm__xmpro__xmidentity__client__baseUrl"                    = "https://ai.${azurerm_dns_zone.dns.name}/"
-      "xm__xmpro__xmidentity__client__sharedkey"                  = "${data.external.deployment_script_outputs.result["AIProductKey"]}"
-      "xm__xmpro__xmidentity__server__baseUrl"                    = "https://sm.${azurerm_dns_zone.dns.name}/"
-      "xm__xmpro__data__connectionString"                         = local.ai_connection_string
-      "xm__xmpro__xmsettings__data__connectionString"             = local.ai_connection_string
-      "xm__xmpro__xmsettings__adminRole"                          = "Administrator"
-      "xm__xmpro__xmsettings__data__connectionString"             = "${local.ai_connection_string}"
-      "xm__xmpro__keyVault__provider"                             = ""
-      "xm__xmpro__keyVault__name"                                 = ""
-      "xm__xmpro__aIDesigner__featureFlags__enableAIAssistant"    = "true"
-      "xm__xmpro__aIDesigner__aiAssistant__mqtt__broker"          = "rabbitmq.${azurerm_dns_zone.dns.name}"
-      "xm__xmpro__aIDesigner__aiAssistant__mqtt__port"            = "1883"
-      "xm__xmpro__aIDesigner__aiAssistant__mqtt__clientid"        = "aiserver"
-      "xm__xmpro__aIDesigner__aiAssistant__mqtt__statusTopic"     = "v1/xmpro/ai/aiassistant/conversation/datastream/aiserver/status"
-      "xm__xmpro__aIDesigner__aiAssistant__mqtt__username"        = "${var.rabbitmq_user}"
-      "xm__xmpro__aIDesigner__aiAssistant__mqtt__password"        = "${var.rabbitmq_password}"
-      "xm__xmpro__aIDesigner__aiAssistant__mqtt__timeoutDuration" = "250"
-      "ASPNETCORE_URLS"                                           = "http://+:5000"
-      "xm__xmpro__healthChecks__cssPath"                          = "/app/ClientApp/dist/en-US/assets/content/styles/healthui.css"
+      "ASPNETCORE_ENVIRONMENT"                                                = "dev"
+      "ASPNETCORE_FORWARDEDHEADERS_ENABLED"                                   = "true"
+      "ASPNETCORE_URLS"                                                       = "http://+:5000"
+      "xm__xmpro__keyVault__provider"                                         = "Azure"
+      "xm__xmpro__keyVault__name"                                             = azurerm_key_vault.ai_vault.name
+      "xm__xmpro__xmsettings__adminRole"                                      = "Administrator"
+      "xm__xmpro__xmidentity__client__baseUrl"                                = "https://ai.${azurerm_dns_zone.dns.name}/"
+      "xm__xmpro__xmidentity__server__baseUrl"                                = "https://sm.${azurerm_dns_zone.dns.name}/"
+      "xm__xmpro__aIDesigner__jupyterUrl__url"                                = "https://xmpro-jupyter-dev.southeastasia.cloudapp.azure.com"
+      "xm__xmpro__aIDesigner__aiAssistant__mqtt__broker"                      = "rabbitmq.${azurerm_dns_zone.dns.name}"
+      "xm__xmpro__aIDesigner__aiAssistant__mqtt__port"                        = "1883"
+      "xm__xmpro__aIDesigner__aiAssistant__mqtt__clientid"                    = "aiserver"
+      "xm__xmpro__aIDesigner__aiAssistant__mqtt__statusTopic"                 = "v1/xmpro/ai/aiassistant/conversation/datastream/aiserver/status"
+      "xm__xmpro__aIDesigner__aiAssistant__mqtt__timeoutDuration"             = "250"
+      "xm__xmpro__aIDesigner__featureFlags__enableAIAssistant"                = "true"
+      "xm__xmpro__healthChecks__cssPath"                                      = "/app/ClientApp/dist/en-US/assets/content/styles/healthui.css"
+      "xm__xmpro__gateway__featureflags__enableapplicationinsightstelemetry"  = true
+      "xm__applicationinsights__minimumlevel__default"                        = var.appinsights_minimum_level_default
     }
 
     ports {
       port     = 5000
       protocol = "TCP"
     }
-
   }
 
   container {
@@ -111,6 +109,14 @@ resource "azurerm_container_group" "ai" {
   exposed_port {
     port     = 5000
     protocol = "TCP"
+  }
+
+  diagnostics {
+    log_analytics {
+      workspace_id  = azurerm_log_analytics_workspace.logs.workspace_id
+      log_type      = "ContainerInsights"
+      workspace_key = azurerm_log_analytics_workspace.logs.primary_shared_key
+    }
   }
 
   tags = {

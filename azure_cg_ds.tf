@@ -19,11 +19,16 @@ resource "azurerm_container_group" "ds" {
   ip_address_type     = "Public"
   dns_name_label      = "cg-${var.prefix}-ds-${var.environment}-${var.location}"
   os_type             = "Linux"
+  depends_on          = [ azurerm_key_vault.ds_vault ]
 
   image_registry_credential {
     server   = var.acr_url_product
     username = var.acr_username
     password = var.acr_password
+  }
+
+  identity {
+    type = "SystemAssigned"
   }
 
   container {
@@ -33,27 +38,23 @@ resource "azurerm_container_group" "ds" {
     memory = "2"
 
     environment_variables = {
-      "ASPNETCORE_ENVIRONMENT"                        = "dev"
-      "ASPNETCORE_FORWARDEDHEADERS_ENABLED"           = "true"
-      "xm__ApplicationInsights__ConnectionString"     = "${azurerm_application_insights.appinsights.connection_string}"
-      "xm__xmpro__xmsettings__adminRole"              = "Administrator"
-      "xm__xmpro__xmsettings__data__connectionString" = "${local.ds_connection_string}"
-      "xm__xmpro__data__connectionString"             = "${local.ds_connection_string}"
-      "xm__xmpro__xmidentity__client__id"             = "${data.external.deployment_script_outputs.result["DSProductId"]}"
-      "xm__xmpro__xmidentity__client__sharedkey"      = "${data.external.deployment_script_outputs.result["DSProductKey"]}"
-      "xm__xmpro__xmidentity__client__baseUrl"        = "https://ds.${azurerm_dns_zone.dns.name}/"
-      "xm__xmpro__xmidentity__server__baseUrl"        = "https://sm.${azurerm_dns_zone.dns.name}/"
-      "xm__xmpro__keyVault__provider"                 = ""
-      "xm__xmpro__keyVault__name"                     = ""
-      "ASPNETCORE_URLS"                               = "http://+:5000"
-      "xm__xmpro__featureFlags__enableAIAssistant"    = "true"
+      "ASPNETCORE_ENVIRONMENT"                                                = "dev"
+      "ASPNETCORE_FORWARDEDHEADERS_ENABLED"                                   = "true"
+      "ASPNETCORE_URLS"                                                       = "http://+:5000"
+      "xm__xmpro__keyVault__provider"                                         = "Azure"
+      "xm__xmpro__keyVault__name"                                             = azurerm_key_vault.ds_vault.name
+      "xm__xmpro__xmsettings__adminRole"                                      = "Administrator"
+      "xm__xmpro__xmidentity__client__baseUrl"                                = "https://ds.${azurerm_dns_zone.dns.name}/"
+      "xm__xmpro__xmidentity__server__baseUrl"                                = "https://sm.${azurerm_dns_zone.dns.name}/"
+      "xm__xmpro__featureFlags__enableAIAssistant"                            = "true"
+      "xm__xmpro__gateway__featureflags__enableapplicationinsightstelemetry"  = true
+      "xm__applicationinsights__minimumlevel__default"                        = var.appinsights_minimum_level_default
     }
+
     ports {
       port     = 5000
       protocol = "TCP"
-
     }
-
   }
 
   container {
@@ -101,6 +102,14 @@ resource "azurerm_container_group" "ds" {
   exposed_port {
     port     = 5000
     protocol = "TCP"
+  }
+
+  diagnostics {
+    log_analytics {
+      workspace_id  = azurerm_log_analytics_workspace.logs.workspace_id
+      log_type      = "ContainerInsights"
+      workspace_key = azurerm_log_analytics_workspace.logs.primary_shared_key
+    }
   }
 
   tags = {
