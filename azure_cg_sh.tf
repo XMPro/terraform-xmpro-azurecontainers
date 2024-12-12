@@ -10,10 +10,10 @@ data "external" "ds_sh_outputs" {
 locals {
   container_streamhost_data = {
     default = {
-      streamhost_name              = "SH-01-TFACI-DEFAULT-${var.environment}-${var.location}"
+      streamhost_name              = "sh-01-tfaci-default-${var.environment}-${var.location}"
       ds_server_url                = "https://ds.${azurerm_dns_zone.dns.name}/"
       streamhost_collection_id     = data.external.ds_sh_outputs.result["DefaultId"]
-      streamhost_secret            = data.external.ds_sh_outputs.result["DefaultSecret"]
+      streamhost_collection_secret = data.external.ds_sh_outputs.result["DefaultSecret"]
       appinsights_connectionstring = azurerm_application_insights.appinsights.connection_string
       streamhost_container_image   = var.streamhost_default_container_image
       streamhost_cpu               = var.sh_default_cpu
@@ -22,10 +22,10 @@ locals {
       volumes                      = []
     },
     ai = {
-      streamhost_name              = "SH-02-TFACI-AI-${var.environment}-${var.location}"
+      streamhost_name              = "sh-02-tfaci-ai-${var.environment}-${var.location}"
       ds_server_url                = "https://ds.${azurerm_dns_zone.dns.name}/"
       streamhost_collection_id     = data.external.ds_sh_outputs.result["AIAssistantId"]
-      streamhost_secret            = data.external.ds_sh_outputs.result["AIAssistantSecret"]
+      streamhost_collection_secret = data.external.ds_sh_outputs.result["AIAssistantSecret"]
       appinsights_connectionstring = azurerm_application_insights.appinsights.connection_string
       streamhost_container_image   = var.streamhost_ai_container_image
       streamhost_cpu               = var.sh_ai_cpu
@@ -53,34 +53,43 @@ locals {
 }
 
 module "sh" {
-  source  = "XMPro/streamhost/xmpro"
-  version = "0.0.6-alpha"
+  # source  = "XMPro/streamhost/xmpro"
+  # version = "0.0.6-alpha"
 
   ## For local development, change source to this:
-  # source = "../terraform-xmpro-streamhost"
+  source = "../terraform-xmpro-streamhost"
 
   for_each = local.container_streamhost_data
 
-  streamhost_name            = each.value.streamhost_name
-  streamhost_cpu             = each.value.streamhost_cpu
-  streamhost_memory          = each.value.streamhost_memory
-  streamhost_container_image = each.value.streamhost_container_image
+  streamhost_name                  = each.value.streamhost_name
+  streamhost_cpu                   = each.value.streamhost_cpu
+  streamhost_memory                = each.value.streamhost_memory
+  streamhost_container_image       = each.value.streamhost_container_image
 
-  streamhost_collection_id     = each.value.streamhost_collection_id
-  streamhost_secret            = each.value.streamhost_secret
-  appinsights_connectionstring = each.value.appinsights_connectionstring
-  ds_server_url                = each.value.ds_server_url
+  streamhost_collection_id         = each.value.streamhost_collection_id
+  streamhost_collection_secret     = each.value.streamhost_collection_secret
+  ds_server_url                    = each.value.ds_server_url
+
+
 
   prefix                           = var.prefix
   environment                      = var.environment
   location                         = var.location
+
+  use_existing_log_analytics       = true
   log_analytics_id                 = local.log_analytics_id
   log_analytics_primary_shared_key = local.log_analytics_primary_shared_key
+
+  use_existing_app_insights        = true
+  appinsights_connectionstring     = each.value.appinsights_connectionstring
+
+  use_existing_rg                  = true
   resource_group_name              = local.resource_group_name
   resource_group_location          = local.resource_group_location
 
   environment_variables = each.value.env_variables
 
+  use_existing_storage_account     = true
   volumes = each.value.volumes
 
   depends_on = [azurerm_log_analytics_workspace.logs]
