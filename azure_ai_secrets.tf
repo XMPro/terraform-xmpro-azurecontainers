@@ -1,7 +1,7 @@
 resource "azurerm_key_vault" "ai_vault" {
   name                = format("%s-vault-%s-ai", var.companyname, random_string.name_suffix.result)
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.xmprodocker.location
+  resource_group_name = azurerm_resource_group.xmprodocker.name
   sku_name            = "standard"
   tenant_id           = data.azurerm_client_config.current.tenant_id
 }
