@@ -94,6 +94,7 @@ resource "azurerm_container_group" "ai" {
     commands = [
       "caddy", "reverse-proxy", "--from", "ai.${azurerm_dns_zone.dns.name}", "--to", "http://cg-${var.prefix}-ai-${var.environment}-${var.location}.${var.location}.azurecontainer.io:5000"
     ]
+
     ports {
       port     = 443
       protocol = "TCP"

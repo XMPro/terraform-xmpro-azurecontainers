@@ -87,6 +87,7 @@ resource "azurerm_container_group" "ad" {
     commands = [
       "caddy", "reverse-proxy", "--from", "ad.${azurerm_dns_zone.dns.name}", "--to", "http://cg-${var.prefix}-ad-${var.environment}-${var.location}.${var.location}.azurecontainer.io:5000"
     ]
+    
     ports {
       port     = 443
       protocol = "TCP"

@@ -112,10 +112,12 @@ resource "azurerm_container_group" "neo4j" {
         ),
       }
     }
+
     # commands = [
     #   "caddy", "reverse-proxy", "--from", "neo4j.${azurerm_dns_zone.ykgw.name}", "--to",
     #   "cg-${var.prefix}-neo4j-${var.environment}-${var.location}.${var.location}.azurecontainer.io:7474",
     # ]
+    
     ports {
       port     = 443
       protocol = "TCP"
