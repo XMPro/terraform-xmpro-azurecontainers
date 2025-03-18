@@ -12,3 +12,7 @@ locals {
   ds_connection_string   = "${local.base_connection_string}Initial Catalog=DS;"
   ai_connection_string   = "${local.base_connection_string}Initial Catalog=AI;"
 }
+
+locals {
+  streamhost_default_container_image_tags = length(var.streamhost_default_container_image_tags) == 0 ? (var.imageversion != "" ? [var.imageversion] : ["latest"]) : var.streamhost_default_container_image_tags
+}

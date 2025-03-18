@@ -43,20 +43,6 @@ variable "docker_neo4j_auth" {
   default = "password1234"
 }
 
-variable "docker_rag_azure_openaichatdeploymentname" {
-  description = "Azure chat deployment name to be used by the stream host"
-  default     = "gpt4o"
-}
-
-variable "docker_rag_azure_openaiembeddingsdeploymentname" {
-  description = "Azure embeddings deployment name by the stream host"
-  default     = "text-embedding-ada-002"
-}
-
-variable "docker_rag_openaiversion" {
-  description = "Azure openai version by the stream host"
-  default     = "2024-02-01"
-}
 variable "db_admin_username" {
   description = "MSSQL username"
   default     = "xmadmin"
@@ -90,11 +76,6 @@ variable "companyname" {
   }
 }
 
-variable "docker_rag_migration_script_path" {
-  description = "value"
-  default     = "/scripts"
-}
-
 variable "rabbitmq_user" {
   description = "RabbitMQ Username"
   default     = "rabbitmq"
@@ -104,14 +85,6 @@ variable "rabbitmq_password" {
   default     = "rabbitpassword"
   sensitive   = true
 }
-
-# variable "docker_sh_mags_collection_id" {
-#   sensitive = true
-# }
-
-# variable "docker_sh_mags_secret" {
-#   sensitive = true
-# }
 
 variable "dns_zone_name" {
   description = "The DNS zone name"
@@ -254,10 +227,17 @@ variable "sh_ai_cpu" {
   default     = 1
 }
 
-variable "streamhost_default_container_image" {
-  description = "streamhost default container image"
+variable "streamhost_default_container_image_base" {
+  description = "The base docker container image (without tag) to be used by the stream host"
+  default     = "xmprononprod.azurecr.io/stream-host"
   type        = string
-  default     = "xmprocontrib.azurecr.io/sh-debian-ai-assistant:latest"
+}
+
+# If no value is provided, it will be set to the imageversion variable if present, otherwise it will be set to "latest" via locals
+variable "streamhost_default_container_image_tags" {
+  description = "The docker container image tag(s) specifying the version and variant of the stream host"
+  type        = list(string)
+  default     = [""]
 }
 
 variable "streamhost_ai_container_image" {
