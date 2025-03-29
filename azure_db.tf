@@ -52,14 +52,14 @@ resource "azurerm_mssql_database" "ds" {
   zone_redundant = false
   sku_name       = "S0"
 }
-resource "azurerm_mssql_database" "sm" {
-  count          = var.use_existing_sql_server ? 0 : 1
-  name           = "SM"
-  server_id      = azurerm_mssql_server.mssql[0].id
-  collation      = "SQL_Latin1_General_CP1_CI_AS"
-  max_size_gb    = 1
-  read_scale     = false
-  create_mode    = "Default"
-  zone_redundant = false
-  sku_name       = "S0"
-}
+# resource "azurerm_mssql_database" "sm" {
+#   count          = var.use_existing_sql_server ? 0 : 1
+#   name           = "SM"
+#   server_id      = azurerm_mssql_server.mssql[0].id
+#   collation      = "SQL_Latin1_General_CP1_CI_AS"
+#   max_size_gb    = 1
+#   read_scale     = false
+#   create_mode    = "Default"
+#   zone_redundant = false
+#   sku_name       = "S0"
+# }

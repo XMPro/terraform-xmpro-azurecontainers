@@ -8,7 +8,7 @@ output "ds_url" {
   value = trim(azurerm_dns_cname_record.ds.fqdn, ".")
 }
 output "sm_url" {
-  value = trim(azurerm_dns_cname_record.sm.fqdn, ".")
+  value = module.sm.dns_cname_record_fqdn
 }
 
 output "sqlserver_fqdn" {
@@ -19,19 +19,19 @@ output "CompanyName" {
   value = var.companyname
 }
 output "DSProductKey" {
-  value = data.external.deployment_script_outputs.result["DSProductKey"]
+  value = module.sm.DSProductKey #data.external.deployment_script_outputs.result["DSProductKey"]
 }
 
 output "ADProductKey" {
-  value = data.external.deployment_script_outputs.result["ADProductKey"]
+  value = module.sm.ADProductKey #data.external.deployment_script_outputs.result["ADProductKey"]
 }
 
 output "AIProductKey" {
-  value = data.external.deployment_script_outputs.result["AIProductKey"]
+  value = module.sm.AIProductKey #data.external.deployment_script_outputs.result["AIProductKey"]
 }
 
 output "NBProductKey" {
-  value = data.external.deployment_script_outputs.result["NBProductKey"]
+  value = module.sm.NBProductKey #data.external.deployment_script_outputs.result["NBProductKey"]
 }
 
 # output "DefaultId" {
@@ -86,4 +86,8 @@ output "log_analytics_primary_shared_key" {
 
 output "appinsights_connectionstring" {
   value = azurerm_application_insights.appinsights.connection_string
+}
+
+output "data_client_config" {
+  value = data.azurerm_client_config.current.tenant_id
 }

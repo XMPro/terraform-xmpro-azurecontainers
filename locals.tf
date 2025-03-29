@@ -15,4 +15,5 @@ locals {
 
 locals {
   streamhost_default_container_image_tags = length(var.streamhost_default_container_image_tags) == 0 ? (var.imageversion != "" ? [var.imageversion] : ["latest"]) : var.streamhost_default_container_image_tags
+  streamhost_ai_container_image_tags = length(var.streamhost_ai_container_image_tags) == 0 ? (var.imageversion != "" ? [var.imageversion] : ["latest"]) : var.streamhost_ai_container_image_tags
 }

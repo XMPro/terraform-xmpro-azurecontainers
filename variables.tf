@@ -240,10 +240,16 @@ variable "streamhost_default_container_image_tags" {
   default     = [""]
 }
 
-variable "streamhost_ai_container_image" {
+variable "streamhost_ai_container_image_base" {
   description = "streamhost ai container image"
   type        = string
   default     = "xmprocontrib.azurecr.io/sh-debian-ai-assistant:latest"
+}
+
+variable "streamhost_ai_container_image_tags" {
+ description = "The docker container image tag(s) specifying the version and variant of the stream host"
+  type        = list(string)
+  default     = [""]
 }
 
 variable "docker_migration_script_path" {
@@ -283,6 +289,19 @@ variable "existing_sql_server_url" {
   default     = ""
 }
 
+
+variable "use_existing_sql_server_for_sm" {
+  description = "Flag to determine whether to use an existing SQL server"
+  type        = bool
+  default     = true
+}
+
+variable "is_new_installation_for_sm" {
+  description = "Flag to determine whether to use a new installation"
+  type        = bool
+  default     = true
+}
+
 # --------------------------------------------------
 # App name
 # --------------------------------------------------
@@ -303,4 +322,24 @@ variable "appinsights_minimum_level_default" {
     condition     = contains(["Trace", "Debug", "Information", "Warning", "Error", "Critical", "None"], var.appinsights_minimum_level_default)
     error_message = "The minimum logging level must be one of: Trace, Debug, Information, Warning, Error, Critical, or None."
   }
+}
+
+# --------------------------------------------------
+# Existing DNS Zone
+# --------------------------------------------------
+
+variable "use_existing_dns_zone_for_sm" {
+  description = "Flag to determine whether to use an existing DNS zone for SM"
+  type        = bool
+  default     = true
+}
+
+# --------------------------------------------------
+# Existing client config
+# --------------------------------------------------
+
+variable "use_existing_client_config" {
+  description = "Flag to determine whether to use an existing client config"
+  type        = bool
+  default     = true
 }

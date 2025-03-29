@@ -23,14 +23,15 @@ locals {
       volumes                         = []
     },
     ai = {
-      streamhost_name              = "sh-02-tfaci-ai-${var.environment}-${var.location}"
-      ds_server_url                = "https://ds.${azurerm_dns_zone.dns.name}/"
-      streamhost_collection_id     = data.external.ds_sh_outputs.result["AIAssistantId"]
-      streamhost_collection_secret = data.external.ds_sh_outputs.result["AIAssistantSecret"]
-      appinsights_connectionstring = azurerm_application_insights.appinsights.connection_string
-      streamhost_container_image   = var.streamhost_ai_container_image
-      streamhost_cpu               = var.sh_ai_cpu
-      streamhost_memory            = var.sh_ai_memory
+      streamhost_name                 = "sh-02-tfaci-ai-${var.environment}-${var.location}"
+      ds_server_url                   = "https://ds.${azurerm_dns_zone.dns.name}/"
+      streamhost_collection_id        = data.external.ds_sh_outputs.result["AIAssistantId"]
+      streamhost_collection_secret    = data.external.ds_sh_outputs.result["AIAssistantSecret"]
+      appinsights_connectionstring    = azurerm_application_insights.appinsights.connection_string      
+      streamhost_container_image_base = var.streamhost_ai_container_image_base
+      streamhost_container_image_tags = local.streamhost_ai_container_image_tags
+      streamhost_cpu                  = var.sh_ai_cpu
+      streamhost_memory               = var.sh_ai_memory
       env_variables = {
         "AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"       = "${var.docker_azure_openaichatdeploymentname}"
         "AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT_NAME" = "${var.docker_azure_openaiembeddingsdeploymentname}"

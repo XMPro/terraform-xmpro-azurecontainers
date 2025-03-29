@@ -84,14 +84,14 @@ resource "azurerm_key_vault_secret" "ad_data_connection_string" {
 
 resource "azurerm_key_vault_secret" "ad_client_id" {
   name         = "xmpro--xmidentity--client--id"
-  value        = data.external.deployment_script_outputs.result["ADProductId"]
+  value        = module.sm.ADProductId #data.external.deployment_script_outputs.result["ADProductId"]
   key_vault_id = azurerm_key_vault.ad_vault.id
   depends_on   = [azurerm_key_vault_access_policy.terraform_ad_policy]
 }
 
 resource "azurerm_key_vault_secret" "ad_client_sharedkey" {
   name         = "xmpro--xmidentity--client--sharedkey"
-  value        = data.external.deployment_script_outputs.result["ADProductKey"]
+  value        = module.sm.ADProductKey #data.external.deployment_script_outputs.result["ADProductKey"]
   key_vault_id = azurerm_key_vault.ad_vault.id
   depends_on   = [azurerm_key_vault_access_policy.terraform_ad_policy]
 }
